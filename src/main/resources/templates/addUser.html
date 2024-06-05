@@ -8,26 +8,31 @@
 <body>
 <div class="container">
     <h1>Add User</h1>
-    <form th:action="@{/users/addUser}" method="post">
+    <form th:action="@{/users/addUser}" th:object="${user}" method="post">
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control"/>
+            <input type="text" id="name" th:field="*{name}" class="form-control"/>
+            <div th:if="${#fields.hasErrors('name')}" class="alert alert-danger" th:errors="*{name}"></div>
         </div>
         <div class="form-group">
             <label for="lastname">Last Name</label>
-            <input type="text" id="lastname" name="lastname" class="form-control"/>
+            <input type="text" id="lastname" th:field="*{lastname}" class="form-control"/>
+            <div th:if="${#fields.hasErrors('lastname')}" class="alert alert-danger" th:errors="*{lastname}"></div>
         </div>
         <div class="form-group">
             <label for="age">Age</label>
-            <input type="number" id="age" name="age" class="form-control"/>
+            <input type="number" id="age" th:field="*{age}" class="form-control"/>
+            <div th:if="${#fields.hasErrors('age')}" class="alert alert-danger" th:errors="*{age}"></div>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control"/>
+            <input type="email" id="email" th:field="*{email}" class="form-control"/>
+            <div th:if="${#fields.hasErrors('email')}" class="alert alert-danger" th:errors="*{email}"></div>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control"/>
+            <input type="password" id="password" th:field="*{password}" class="form-control"/>
+            <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" th:errors="*{password}"></div>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>

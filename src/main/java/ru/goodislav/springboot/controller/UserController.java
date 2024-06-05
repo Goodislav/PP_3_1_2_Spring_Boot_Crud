@@ -1,10 +1,12 @@
 package ru.goodislav.springboot.controller;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.goodislav.springboot.model.User;
@@ -23,7 +25,11 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@ModelAttribute User user) {
+    public String addUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.info("Binding result has errors: {}", bindingResult);
+            return "addUser";
+        }
         logger.info("Adding user: {}", user);
         userService.addUser(user);
         logger.info("User added successfully: {}", user);
@@ -50,17 +56,22 @@ public class UserController {
                              @RequestParam("lastname") String lastname,
                              @RequestParam("age") int age,
                              @RequestParam("email") String email,
-                             @RequestParam("password") String password) {
+                             @RequestParam("password") String password,
+                             @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.info("Binding result has errors: {}", bindingResult);
+            return "editUser";
+        }
         logger.info("Updating user with id: {}", id);
-        User user = userService.getUserById(id);
-        if (user != null) {
-            user.setName(name);
-            user.setLastname(lastname);
-            user.setAge(age);
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.updateUser(user);
-            logger.info("User updated successfully: {}", user);
+        User updateUser = userService.getUserById(id);
+        if (updateUser != null) {
+            updateUser.setName(name);
+            updateUser.setLastname(lastname);
+            updateUser.setAge(age);
+            updateUser.setEmail(email);
+            updateUser.setPassword(password);
+            userService.updateUser(updateUser);
+            logger.info("User updated successfully: {}", updateUser);
         } else {
             logger.info("User with id: {} not found", id);
         }
@@ -81,9 +92,9 @@ public class UserController {
     }
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-        logger.info("Deleting user with id: {}", id);
+        logger.info("Deleting user with id \"{}\"", id);
         userService.deleteUser(id);
-        logger.info("User deleted successfully: {}", id);
+        logger.info("User with id \"{}\" deleted successfully", id);
         return "redirect:/users";
     }
 }

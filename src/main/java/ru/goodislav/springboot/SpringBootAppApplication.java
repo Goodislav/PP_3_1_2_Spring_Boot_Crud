@@ -19,9 +19,12 @@ public class SpringBootAppApplication {
 
     @PostConstruct
     public void init() {
-        userService.addUser(new User("User1", "Lastname1", 20, "a@a.com", "1111"));
-        userService.addUser(new User("User2", "Lastname2", 21, "b@b.com", "2222"));
-        userService.addUser(new User("User3", "Lastname3", 22, "c@c.com", "3333"));
+        userService.addUser(new User("Sergey", "Sergeev", 30,
+                "sergey_sergeev@gmail.com","gG14%sdfhhjkh"));
+        userService.addUser(new User("Petr", "Petrov", 27,
+                "petr_petrov@yahoo.com", "jklSdf88^sdfss"));
+        userService.addUser(new User("Maria", "Kovaleva", 25,
+                "maria_kovaleva@ya.com", "fgdssd72hjT#"));
     }
 
 }

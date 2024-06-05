@@ -1,5 +1,6 @@
 package ru.goodislav.springboot.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -9,14 +10,27 @@ public class User {
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String name;
     @Column(name = "lastname")
+    @NotEmpty(message = "Lastname should not be empty")
+    @Size(min = 2, max = 70, message = "Lastname should be between 2 and 70 characters")
     private String lastname;
     @Column(name = "age")
+    @Min(value = 0, message = "Age should be greater than 0")
+    @Max(value = 120, message = "Age should be less than 120")
     private int age;
     @Column(name = "email")
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "Email should be valid")
     private String email;
     @Column(name = "password")
+    @NotEmpty(message = "Password should not be empty")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$",
+            message = "Password should be between 8 and 16 characters and contain " +
+                    "at least one uppercase letter, one lowercase letter, one digit, " +
+                    "with no spaces and one special character")
     private String password;
 
     public User() {
